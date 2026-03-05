@@ -58,9 +58,15 @@ sudo defaults write /Library/Preferences/FeatureFlags/Domain/UIKit.plist emoji_e
 # disable 2 finger swipe goes back in browsing history
 defaults write com.google.Chrome AppleEnableSwipeNavigateWithScrolls -bool FALSE
 
-
 # disable spotlight indexing - use Raycast
 sudo mdutil -a -i off
+```
+
+**App specific**:
+```sh
+#  Thunderbird + Ollama
+launchctl setenv OLLAMA_ORIGINS "moz-extension://*"
+
 
 # TODO, does not work. 
 # Disable itunes launcher (pressing f8) - 
