@@ -9,9 +9,6 @@ source "$PATH_CLI_UTILS/_scripts.sh"
 source "$PATH_CLI_UTILS/_functions.sh"
 source "$PATH_CLI_UTILS/_overwrites.sh"
 
-source "$PATH_CLI_UTILS/pod-automation/__index.sh"
-
-
 #### global var overwrites ####
 
 export HOMEBREW_INSTALL_BADGE="☕️"
