@@ -11,17 +11,13 @@ echo "\nsource '$HOME/Documents/GitHub/cli-utils/__index.sh'" >> ~/.zshrc
 Install:
 ```sh
 # fuzzy finder. It replaces half your brain. Rapid file navigation, command search, git integration
-brew install fzf
+# note: if not using this,  comment `alias ls='eza'` in [_alias.sh](./_alias.sh).
+brew install fzf bat eza
 
-# A cat replacement with syntax highlighting. Useful for quick code browsing.
-brew install bat
-
-# A prettier ls, because clarity is computational speed for the mind.
-# See "./_alias.sh" if you use this
-brew install eza
+# markdown preview
+brew install --cask qlmarkdown
+xattr -r -d com.apple.quarantine /Applications/QLMarkdown.app
 ```
-
-> note. If you did not have  `brew install eza`, comment L2 (alias ls='eza') in [_alias.sh](./_alias.sh).
 
 ---
 
@@ -62,8 +58,19 @@ defaults write com.google.Chrome AppleEnableSwipeNavigateWithScrolls -bool FALSE
 sudo mdutil -a -i off
 ```
 
-**App specific**:
+## Keepers
 ```sh
+# can help with flickering vscode on external monitor (not persistent, wip)
+code --disable-gpu
+
+# Restart audio core
+sudo launchctl kickstart -kp system/com.apple.audio.coreaudiod
+
+#:~:text= for chrome
+
+cp  ~/Library/Application\ Support/Code/User/settings.json  ~/Documents/GitHub/cli-utils/saved-configs/settings.json
+
+
 #  Thunderbird + Ollama
 launchctl setenv OLLAMA_ORIGINS "moz-extension://*"
 
@@ -72,18 +79,5 @@ launchctl setenv OLLAMA_ORIGINS "moz-extension://*"
 # Disable itunes launcher (pressing f8) - 
 # launchctl unload -w /System/Library/LaunchAgents/com.apple.rcd.plist
 ```
-
-**keepers**:
-```sh
-# can help with flickering vscode on external monitor (not persistent, wip)
-code --disable-gpu
-
-# Restart audio core
-sudo launchctl kickstart -kp system/com.apple.audio.coreaudiod
-```
-
-# MISC
-- `#:~:text=` chrome
-- `cp  ~/Library/Application\ Support/Code/User/settings.json  ~/Documents/GitHub/cli-utils/saved-configs/settings.json`
 
 
