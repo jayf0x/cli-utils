@@ -75,9 +75,6 @@ cp  ~/Library/Application\ Support/Code/User/settings.json  ~/Documents/GitHub/c
 launchctl setenv OLLAMA_ORIGINS "moz-extension://*"
 
 
-caffeinate -sdi
-
-
 # TODO, does not work. 
 # Disable itunes launcher (pressing f8) - 
 # launchctl unload -w /System/Library/LaunchAgents/com.apple.rcd.plist

@@ -23,6 +23,9 @@ alias python="python3"
 alias pip="pip3"
 alias py="python3"
 
+alias sqlite="sqlite3"
+
 alias yd="yarn dev"
 alias yqrn="yarn"
 alias pn="pnpm"
+alias caff="caffeinate -sdi"
