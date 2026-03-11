@@ -2,7 +2,7 @@
 # Please import me :)
 
 # path to this repo
-export PATH_CLI_UTILS="$HOME/Documents/GitHub/cli-utils"
+export PATH_CLI_UTILS="$HOME/Documents/GitHub/cli-utils/bash"
 
 source "$PATH_CLI_UTILS/_alias.sh"
 source "$PATH_CLI_UTILS/_scripts.sh"

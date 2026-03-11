@@ -1,11 +1,14 @@
-# cli-utils
-Quick personal setup for `MacOS` .
+# Personal CLI tooling and apps
+- ./apps contains some of background processes or apps that are used
+- ./bash contains the actual cli utils
+
+# Quick  setup on new machine (`MacOS`) .
 
 Add path:
 ```sh
-echo "\nsource '$(pwd)/__index.sh'" >> ~/.zshrc
+echo "\nsource '$(pwd)/bash/__index.sh'" >> ~/.zshrc
 # or
-echo "\nsource '$HOME/Documents/GitHub/cli-utils/__index.sh'" >> ~/.zshrc
+echo "\nsource '$HOME/Documents/GitHub/cli-utils/bash/__index.sh'" >> ~/.zshrc
 ```
 
 Install:
