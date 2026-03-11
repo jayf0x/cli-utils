@@ -22,10 +22,14 @@ alias t2m='tree --du -h -L 2 | grep M]'
 alias python="python3"
 alias pip="pip3"
 alias py="python3"
+alias py3="/usr/bin/python3" # in case of brew and none-brew mixup
 
 alias sqlite="sqlite3"
 
 alias yd="yarn dev"
 alias yqrn="yarn"
 alias pn="pnpm"
+
+
 alias caff="caffeinate -sdi"
+alias urldecode='sed "s@+@ @g;s@%@\\\\x@g" | xargs -0 printf "%b"'

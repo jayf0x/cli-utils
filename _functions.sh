@@ -13,7 +13,7 @@
 
     git checkout --orphan temp_nuke_branch
     git add -A
-    git commit -m "Initial commit"
+    git commit -m "$msg"
 
     git branch -D main 2>/dev/null || true
     git branch -m main
