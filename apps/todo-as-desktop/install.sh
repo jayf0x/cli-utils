@@ -14,7 +14,7 @@ fi
 
 if launchctl list | grep $ID &> /dev/null; then
     echo 'Plist already exists, first unload before reloading. Try:'
-    echo "launchctl bootout gui/501/$ID"
+    echo "launchctl bootout gui/$(id -u)/$ID"
     exit 0
 fi
 

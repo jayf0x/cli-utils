@@ -12,5 +12,5 @@ Add "utils/Terminal.app"
 **Remove**:
 ```sh
 sudo rm ~/Library/LaunchAgents/custom.todo_wallpaper.plist
-launchctl bootout gui/501/todo_wallpaper
+launchctl bootout gui/$(id -u)/todo_wallpaper
 ```
