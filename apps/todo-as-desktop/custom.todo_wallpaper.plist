@@ -1,18 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
-"http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-
   <key>Label</key>
-  <string>todo.wallpaper</string>
-
+  <string>custom.todo_wallpaper</string>
   <key>ProgramArguments</key>
   <array>
-    <string>~/Documents/GitHub/cli-utils/apps/todo-as-desktop/update.sh</string>
+    <string>~/Documents/GitHub/cli-utils/apps/todo-as-desktop/run.sh</string>
   </array>
-
   <key>StartInterval</key>
   <integer>5000</integer>
 </dict>

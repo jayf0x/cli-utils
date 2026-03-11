@@ -13,13 +13,16 @@ echo "\nsource '$HOME/Documents/GitHub/cli-utils/bash/__index.sh'" >> ~/.zshrc
 
 Install:
 ```sh
-# fuzzy finder. It replaces half your brain. Rapid file navigation, command search, git integration
-# note: if not using this,  comment `alias ls='eza'` in [_alias.sh](./_alias.sh).
+
+# note: if not using eza, comment `alias ls='eza'` in [_alias.sh](./_alias.sh).
 brew install fzf bat eza
 
 # markdown preview
 brew install --cask qlmarkdown
 xattr -r -d com.apple.quarantine /Applications/QLMarkdown.app
+
+
+brew install imagemagick
 ```
 
 ---

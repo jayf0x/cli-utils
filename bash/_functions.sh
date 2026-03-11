@@ -23,7 +23,6 @@
 }
 
 
-
 :llm() {
 	if [[ "$1" = 's' ]]; then
 		ollama serve
@@ -176,3 +175,8 @@
 }
 
 
+
+
+:urlencode() {
+    echo "$1" | jq -sRr @uri
+}

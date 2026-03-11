@@ -32,4 +32,3 @@ alias pn="pnpm"
 
 
 alias caff="caffeinate -sdi"
-alias urldecode='sed "s@+@ @g;s@%@\\\\x@g" | xargs -0 printf "%b"'

@@ -12,7 +12,7 @@ cli_pth_vendors="$PATH_CLI_UTILS/vendor"
         return 1
     fi
 
-    url=$(urlencode "$1" )
+    url=$(:urlencode "$1" )
 
     "$cli_pth_vendors/yt-dlp_macos" \
         -x \
