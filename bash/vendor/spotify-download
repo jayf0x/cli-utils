@@ -1,0 +1,5 @@
+# /usr/bin/env bash
+
+URL="${1:-'https://open.spotify.com/playlist/6xycakrzgflOZ8Ru1yvHK6'}"
+
+spotdl $URL

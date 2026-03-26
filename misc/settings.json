@@ -1,0 +1,142 @@
+{
+  "editor.fontFamily": "Fira Code",
+  "editor.fontLigatures": true,
+  "workbench.iconTheme": "helium-icon-theme",
+  "animations.Install-Method": "Custom CSS and JS",
+  "liveServer.settings.CustomBrowser": "brave",
+  "apc.imports": [
+    "file://${userHome}/.vscode/extensions/brandonkirbyson.vscode-animations-2.0.7/dist/updateHandler.js"
+  ],
+  "vscode_custom_css.imports": [
+    "file://${userHome}/Documents/GitHub/cli-utils/saved-configs/vscode-custom.css",
+    "file://${userHome}/.vscode/extensions/brandonkirbyson.vscode-animations-2.0.7/dist/updateHandler.js"
+  ],
+ "security.workspace.trust.untrustedFiles": "open",
+  "github.copilot.chat.agent.autoFix": false,
+  "github.copilot.enable": {
+    "*": false,
+    "plaintext": false,
+    "markdown": false,
+    "scminput": false
+  },
+
+  // settings from https://github.com/igorbabko/vscode-setup/blob/2025/.vscode/settings.json or  https://www.youtube.com/watch?v=VmFOsK7IhI4
+  // "workbench.activityBar.location": "hidden",
+  // "workbench.editor.showTabs": "single",
+  "workbench.statusBar.visible": true,
+  "workbench.tips.enabled": false,
+  "editor.minimap.enabled": false,
+  "workbench.sideBar.location": "right",
+  "helium-icon-theme.hidesExplorerArrows": true,
+  "workbench.tree.enableStickyScroll": false,
+  "workbench.tree.renderIndentGuides": "none",
+  "workbench.tree.indent": 16,
+  "explorer.compactFolders": false,
+  "explorer.confirmDragAndDrop": false,
+  "explorer.confirmDelete": false,
+  "explorer.decorations.badges": true,
+  "git.decorations.enabled": false,
+  // more settings, but related to "custom ui styles",
+  // "custom-ui-style.external.loadStrategy": "refetch",
+  // "custom-ui-style.external.loadStrategy": "cache",
+  "custom-ui-style.stylesheet": {
+    // this sets the bqckground image and the gradient
+    // ".monaco-editor": "background-image: url('/Users/jverstra/.vscode/me-just-custom/bg02-circles.gif') !important;",
+    // ".overflow-guard": "background: transparent !important",
+    ".monaco-editor": "background: transparent !important",
+    // ".monaco-editor .overflow-guard, .view-lines.monaco-mouse-cursor-text": "background-image: url('/Users/jverstra/.vscode/me-just-custom/bg02-circles.gif') !important; background: transparent !important",
+    ".monaco-editor .overflow-guard": "background-image: url('/Users/jverstra/.vscode/me-just-custom/bg02-circles.gif') !important; background: transparent !important",
+    ".monaco-editor-background": "background: #242424; !important; background: linear-gradient(90deg,rgba(25, 25, 25, 0.99) 0%, rgba(45, 45, 45, 0.8) 70%) !important; backdrop-filter: blur(7px) brightness(0.7)",
+    // ".monaco-editor-background": "background: linear-gradient(270deg, #1e1e1e, #f52526, #1e1e1e) !important; background-size: 600% 600%; animation: backgroundMove 20s ease infinite;",
+    ".notification-toast": "box-shadow: none !important",
+    // ".quick-input-widget.show-file-icons": "box-shadow: none !important",
+    ".quick-input-widget.show-file-icons": "z-index:999; top: 25vh !important; backdrop-filter: blur(15px); background: transparent !important",
+    ".quick-input-widget.show-file-icons .monaco-list-rows": "backdrop-filter: brightness(0.5); background: transparent !important",
+    ".quick-input-list .scrollbar": "display: none",
+    ".quick-input-titlebar": "background: #100B15 !important",
+
+    ".monaco-action-bar.quick-input-inline-action-bar": "display: none",
+    ".editor-widget.find-widget": "box-shadow: none; border-radius: 4px",
+    ".monaco-workbench .part.editor > .content .editor-group-container > .title.title-border-bottom:after": "display: none",
+    ".monaco-scrollable-element > .shadow.top": "display: none",
+    ".sidebar .title-label": "padding: 0 !important",
+    ".sidebar": "border: none !important",
+    ".monaco-workbench .monaco-list:not(.element-focused):focus:before": "outline: none !important",
+    ".monaco-list-row.focused": "outline: none !important",
+    // ".monaco-editor .scroll-decoration": "display: none",
+
+    // .title is the terminal and such
+    ".title-actions": "display: none !important",
+    ".title.show-file-icons .label-container .monaco-icon-label.file-icon": "justify-content: center; padding: 0 !important",
+    ".title .monaco-icon-label:after": "margin-right: 0",
+    ".monaco-workbench .part.editor > .content .editor-group-container > .title > .label-container > .title-label": "padding-left: 60px",
+    ".title .monaco-icon-label.file-icon": "margin: 0 60px",
+    // ".monaco-editor .cursors-layer .cursor": "background-image: linear-gradient(90deg, #28C0EB 10%, #70DAA7 100%); border-radius: 10%;"
+    ".monaco-editor .cursors-layer .cursor": "background-image: linear-gradient(90deg,rgba(24, 122, 119, 0.7) 0%, rgba(34, 163, 148, 1) 73%); border-radius: 10%;"
+  },
+  // "custom-ui-style.font.sansSerif": "Source Code Pro",
+  // "custom-ui-style.font.sansSerif": "Anonymous Pro",
+
+  "editor.multiCursorModifier": "ctrlCmd",
+  "editor.cursorBlinking": "smooth",
+  "editor.cursorStyle": "block",
+  "workbench.colorCustomizations": {
+    // "editor.selectionBackground": "#93ccd155",
+    // "editor.selectionHighlightBackground": "#93ccd155",
+    // "editorCursor.background": "#737373",
+    // "editorOverviewRuler.wordHighlightStrongForeground": "#0000",
+    // "editorOverviewRuler.selectionHighlightForeground": "#0000",
+    // "editorOverviewRuler.rangeHighlightForeground": "#0000",
+    // "editorOverviewRuler.wordHighlightForeground": "#0000",
+    // "editorOverviewRuler.bracketMatchForeground": "#0000",
+    // "editorOverviewRuler.findMatchForeground": "#0000",
+    // "editorOverviewRuler.modifiedForeground": "#0000",
+    // "editorOverviewRuler.deletedForeground": "#0000",
+    // "editorOverviewRuler.warningForeground": "#0000",
+    // "editorOverviewRuler.addedForeground": "#0000",
+    // "editorOverviewRuler.errorForeground": "#0000",
+    // "editorOverviewRuler.infoForeground": "#0000",
+    // "editorOverviewRuler.border": "#0000",
+    "[Aura Dracula Spirit (Soft)]": {
+      "editorSuggestWidget.selectedBackground": "#796aa0",
+      "sideBar.background": "#121212"
+    }
+  },
+  "editor.linkedEditing": true,
+  "workbench.startupEditor": "none",
+  "workbench.layoutControl.enabled": false,
+  "python.createEnvironment.trigger": "off",
+  "chat.agent.maxRequests": 50,
+  "gitlens.ai.model": "vscode",
+  "gitlens.ai.vscode.model": "copilot:gpt-4.1",
+  "update.showReleaseNotes": false,
+  "chat.tools.terminal.autoApprove": {
+    "yarn build": true,
+    "for": true,
+    "do": true,
+    "/dev/null": true,
+    "done": true,
+    "git rev-list": true,
+    "uniq": true,
+    "text='": true,
+    "m": true,
+    "print(f'Text:": true,
+    "text}]')": true,
+    "print(f'Match:": true,
+    "m}')": true,
+    "print(f'Groups:": true,
+    "m.groups()": true
+  },
+  "python.defaultInterpreterPath": "/usr/bin/python3",
+  "chat.emptyState.history.enabled": true,
+  "gitlens.gitCommands.skipConfirmations": [
+    "fetch:command",
+    "stash-push:command",
+    "switch:command"
+  ],
+  "git.openRepositoryInParentFolders": "never",
+  "window.newWindowProfile": "Default",
+  "liveServer.settings.donotShowInfoMsg": true,
+  "telemetry.telemetryLevel": "off"
+  // "window.commandCenter": false
+}
