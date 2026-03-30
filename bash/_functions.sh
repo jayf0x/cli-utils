@@ -2,15 +2,26 @@
 
 
 :git-nuke () {
-    msg=${1-'Initial commit'} 
+    msg=${1-'Initial commit'}
     echo "This nukes ALL git history. Force push. Gone forever."
     printf "Type YES to burn it: "
     read confirm
     [ "$confirm" != "YES" ] && echo "Coward!" && return 0
 
+    if [ ! -f .gitignore ]; then
+        printf "No .gitignore, sure you want to continue? y/n"
+        read confirm
+        [ "$confirm" != "y" ] && return 0
+    fi
+
+    [ ! -f .gitignore ] && echo ".gitignore not found! Creating empty one." && touch .gitignore
+
+    # Orphan branch
     git checkout --orphan temp_nuke_branch
-    git reset  # start clean to use .gitignore
-    git add .
+    git reset  # clear index
+
+    git add $(git ls-files --others --exclude-standard)
+
     git commit -m "$msg"
     git branch -D main 2> /dev/null || true
     git branch -m main
