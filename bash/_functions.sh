@@ -55,7 +55,7 @@
 		ollama show "$model"
 		echo ""
 		echo "Running: $model"
-		ollama run "$model"
+		ollama run --seed 420 "$model"
 		return 1
 	fi
 }
