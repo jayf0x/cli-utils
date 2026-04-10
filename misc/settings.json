@@ -3,17 +3,16 @@
   "editor.fontLigatures": true,
   "workbench.iconTheme": "helium-icon-theme",
   "animations.Install-Method": "Custom CSS and JS",
-  // allows dragdrop external apps
-  "editor.dragAndDrop":true,
+  "editor.dragAndDrop": true,
   "workbench.externalBrowser": "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser",
   "apc.imports": [
-    "file://${userHome}/.vscode/extensions/brandonkirbyson.vscode-animations-2.0.7/dist/updateHandler.js"
+    // "file://${userHome}/.vscode/extensions/brandonkirbyson.vscode-animations-2.0.7/dist/updateHandler.js"
   ],
   "vscode_custom_css.imports": [
     "file://${userHome}/Documents/GitHub/cli-utils/saved-configs/vscode-custom.css",
-    "file://${userHome}/.vscode/extensions/brandonkirbyson.vscode-animations-2.0.7/dist/updateHandler.js"
+    // "file://${userHome}/.vscode/extensions/brandonkirbyson.vscode-animations-2.0.7/dist/updateHandler.js"
   ],
- "security.workspace.trust.untrustedFiles": "open",
+  "security.workspace.trust.untrustedFiles": "open",
   "github.copilot.chat.agent.autoFix": false,
   "github.copilot.enable": {
     "*": false,
@@ -21,10 +20,6 @@
     "markdown": false,
     "scminput": false
   },
-
-  // settings from https://github.com/igorbabko/vscode-setup/blob/2025/.vscode/settings.json or  https://www.youtube.com/watch?v=VmFOsK7IhI4
-  // "workbench.activityBar.location": "hidden",
-  // "workbench.editor.showTabs": "single",
   "workbench.statusBar.visible": true,
   "workbench.tips.enabled": false,
   "editor.minimap.enabled": false,
@@ -38,25 +33,17 @@
   "explorer.confirmDelete": false,
   "explorer.decorations.badges": true,
   "git.decorations.enabled": false,
-  // more settings, but related to "custom ui styles",
-  // "custom-ui-style.external.loadStrategy": "refetch",
-  // "custom-ui-style.external.loadStrategy": "cache",
   "custom-ui-style.stylesheet": {
-    // this sets the bqckground image and the gradient
-    // ".monaco-editor": "background-image: url('/Users/jverstra/.vscode/me-just-custom/bg02-circles.gif') !important;",
-    // ".overflow-guard": "background: transparent !important",
     ".monaco-editor": "background: transparent !important",
-    // ".monaco-editor .overflow-guard, .view-lines.monaco-mouse-cursor-text": "background-image: url('/Users/jverstra/.vscode/me-just-custom/bg02-circles.gif') !important; background: transparent !important",
     ".monaco-editor .overflow-guard": "background-image: url('/Users/jverstra/.vscode/me-just-custom/bg02-circles.gif') !important; background: transparent !important",
     ".monaco-editor-background": "background: #242424; !important; background: linear-gradient(90deg,rgba(25, 25, 25, 0.99) 0%, rgba(45, 45, 45, 0.8) 70%) !important; backdrop-filter: blur(7px) brightness(0.7)",
-    // ".monaco-editor-background": "background: linear-gradient(270deg, #1e1e1e, #f52526, #1e1e1e) !important; background-size: 600% 600%; animation: backgroundMove 20s ease infinite;",
+    // ".monaco-editor-background":
+    //   "background: linear-gradient(270deg, #1e1e1e, #f52526, #1e1e1e) !important; background-size: 600% 600%; animation: backgroundMove 20s ease infinite;",
     ".notification-toast": "box-shadow: none !important",
-    // ".quick-input-widget.show-file-icons": "box-shadow: none !important",
     ".quick-input-widget.show-file-icons": "z-index:999; top: 25vh !important; backdrop-filter: blur(15px); background: transparent !important",
     ".quick-input-widget.show-file-icons .monaco-list-rows": "backdrop-filter: brightness(0.51); background: transparent !important",
     ".quick-input-list .scrollbar": "display: none",
     ".quick-input-titlebar": "background: #100B15 !important",
-
     ".monaco-action-bar.quick-input-inline-action-bar": "display: none",
     ".editor-widget.find-widget": "box-shadow: none; border-radius: 4px",
     ".monaco-workbench .part.editor > .content .editor-group-container > .title.title-border-bottom:after": "display: none",
@@ -65,20 +52,13 @@
     ".sidebar": "border: none !important",
     ".monaco-workbench .monaco-list:not(.element-focused):focus:before": "outline: none !important",
     ".monaco-list-row.focused": "outline: none !important",
-    // ".monaco-editor .scroll-decoration": "display: none",
-
-    // .title is the terminal and such
     ".title-actions": "display: none !important",
     ".title.show-file-icons .label-container .monaco-icon-label.file-icon": "justify-content: center; padding: 0 !important",
     ".title .monaco-icon-label:after": "margin-right: 0",
     ".monaco-workbench .part.editor > .content .editor-group-container > .title > .label-container > .title-label": "padding-left: 60px",
     ".title .monaco-icon-label.file-icon": "margin: 0 60px",
-    // ".monaco-editor .cursors-layer .cursor": "background-image: linear-gradient(90deg, #28C0EB 10%, #70DAA7 100%); border-radius: 10%;"
     ".monaco-editor .cursors-layer .cursor": "background-image: linear-gradient(90deg,rgba(24, 122, 119, 0.7) 0%, rgba(34, 163, 148, 1) 73%); border-radius: 10%;"
   },
-  // "custom-ui-style.font.sansSerif": "Source Code Pro",
-  // "custom-ui-style.font.sansSerif": "Anonymous Pro",
-
   "editor.multiCursorModifier": "ctrlCmd",
   "editor.cursorBlinking": "smooth",
   "editor.cursorStyle": "block",
@@ -154,5 +134,4 @@
   "cSpell.enabledFileTypes": {
     "markdown": true
   }
-  // "window.commandCenter": false
 }
