@@ -3,7 +3,9 @@
   "editor.fontLigatures": true,
   "workbench.iconTheme": "helium-icon-theme",
   "animations.Install-Method": "Custom CSS and JS",
-  "liveServer.settings.CustomBrowser": "brave",
+  // allows dragdrop external apps
+  "editor.dragAndDrop":true,
+  "workbench.externalBrowser": "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser",
   "apc.imports": [
     "file://${userHome}/.vscode/extensions/brandonkirbyson.vscode-animations-2.0.7/dist/updateHandler.js"
   ],
@@ -51,7 +53,7 @@
     ".notification-toast": "box-shadow: none !important",
     // ".quick-input-widget.show-file-icons": "box-shadow: none !important",
     ".quick-input-widget.show-file-icons": "z-index:999; top: 25vh !important; backdrop-filter: blur(15px); background: transparent !important",
-    ".quick-input-widget.show-file-icons .monaco-list-rows": "backdrop-filter: brightness(0.5); background: transparent !important",
+    ".quick-input-widget.show-file-icons .monaco-list-rows": "backdrop-filter: brightness(0.51); background: transparent !important",
     ".quick-input-list .scrollbar": "display: none",
     ".quick-input-titlebar": "background: #100B15 !important",
 
@@ -127,7 +129,7 @@
     "print(f'Groups:": true,
     "m.groups()": true
   },
-  "python.defaultInterpreterPath": "/usr/bin/python3",
+  "python.defaultInterpreterPath": "/Users/me/.pyenv/versions/3.12.4/bin/python",
   "chat.emptyState.history.enabled": true,
   "gitlens.gitCommands.skipConfirmations": [
     "fetch:command",
@@ -137,6 +139,20 @@
   "git.openRepositoryInParentFolders": "never",
   "window.newWindowProfile": "Default",
   "liveServer.settings.donotShowInfoMsg": true,
-  "telemetry.telemetryLevel": "off"
+  "telemetry.telemetryLevel": "off",
+  "cSpell.userWords": [
+    "anonymization",
+    "executemany"
+  ],
+  "cSpell.blockCheckingWhenLineLengthGreaterThan": 6000,
+  "cSpell.enabledNotifications": {
+    "Maximum Word Length Exceeded": false,
+    "Lines too Long": false,
+    "Average Word Length too Long": false
+  },
+  "python-envs.defaultEnvManager": "ms-python.python:system",
+  "cSpell.enabledFileTypes": {
+    "markdown": true
+  }
   // "window.commandCenter": false
 }
