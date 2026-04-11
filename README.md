@@ -20,7 +20,8 @@ brew install fzf bat eza
 # markdown preview
 brew install --cask qlmarkdown
 xattr -r -d com.apple.quarantine /Applications/QLMarkdown.app
-
+# # more previews - TODO: alternative - deprecated
+# brew install --cask qlcolorcode
 
 brew install imagemagick
 ```
