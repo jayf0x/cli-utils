@@ -1,21 +1,33 @@
-# Setup (WIP to make this a package): 
-# - `//registry.npmjs.org/:_authToken=$NPM_TOKEN` in ~/.npmrc
-# - security add-generic-password -a "$USER" -s npm_token -w "xxxx"
-# verify: wtoken bash -c 'echo $NPM_TOKEN | less' 
-wtoken() {
-    local token
-    local key='npm_token'
-    
-    # MacOS
-    if command -v security >/dev/null 2>&1; then
-        token=$(security find-generic-password -s "$key" -w)
-    # Linux
-    elif command -v secret-tool >/dev/null 2>&1; then
-        token=$(secret-tool lookup service npm)
-    else
-        echo "No keyring tool found"
-        return 1
-    fi
+: """
+Simple wrapper to have scoped access to tokens to minimize leakage and prevent being read in plaintext.
 
-    NPM_TOKEN="$token" "$@"
+Usage:
+wtoken NPM_TOKEN npm publish
+wtoken GH_TOKEN gh release create v1.0.0
+
+
+Setup:
+security add-generic-password -a "$USER" -s gh_token -w xxx
+security add-generic-password -a "$USER" -s npm_token -w xxx
+
+"""
+
+wtoken() {
+  local input="$1"
+  shift
+
+  [ -z "$input" ] && { echo "Usage: wtoken <key> <command...>"; return 1; }
+
+  # normalize
+  local base=$(echo "$input" | tr '[:upper:]' '[:lower:]')
+  base=${base%_token}              # remove suffix if present
+
+  local varname=$(echo "${base}_TOKEN" | tr '[:lower:]' '[:upper:]')
+  local service="${base}_token"
+
+  local token=$(security find-generic-password -s "$service" -w 2>/dev/null)
+
+  [ -z "$token" ] && { echo "Token not found for $input"; return 1; }
+
+  env "$varname=$token" "$@"
 }
