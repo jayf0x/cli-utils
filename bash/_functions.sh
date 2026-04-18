@@ -1,6 +1,5 @@
 #### general custom functions ####
 
-
 :git-nuke () {
     msg=${1-'Initial commit'}
     echo "This nukes ALL git history. Force push. Gone forever."
