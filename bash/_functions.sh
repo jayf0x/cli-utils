@@ -97,6 +97,7 @@
 	rm -rf ~/Library/Application\ Support/stremio-server/stremio-cache
 	# rm -rf ~/Library/Caches/*
 	rm -rf ~/Library/Logs/*
+    rm -rf ~/.npm/_logs
 	yarn cache clean
 	
 	if [[ $1 ]]; then
