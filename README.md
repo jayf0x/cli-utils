@@ -1,46 +1,40 @@
-# Personal CLI tooling and apps
-- ./apps contains some of background processes or apps that are used
-- ./bash contains the actual cli utils
+# CLI Utils
 
-# Quick  setup on new machine (`MacOS`) .
+Personal CLI tooling and background apps for macOS.
 
-Add path:
+- `./bash` — shell utilities and aliases, sourced into `~/.zshrc`
+- `./apps` — background processes and standalone apps
+
+## Setup on a new machine
+
+Source the index file:
+
 ```sh
-echo "\nsource '$(pwd)/bash/__index.sh'" >> ~/.zshrc
-# or
 echo "\nsource '$HOME/Documents/GitHub/cli-utils/bash/__index.sh'" >> ~/.zshrc
 ```
 
-Install:
+Install dependencies:
+
 ```sh
+# note: if not using eza, comment `alias ls='eza'` in _alias.sh
+brew install fzf bat eza imagemagick
 
-# note: if not using eza, comment `alias ls='eza'` in [_alias.sh](./_alias.sh).
-brew install fzf bat eza
-
-# markdown preview
+# Markdown preview in Quick Look
 brew install --cask qlmarkdown
 xattr -r -d com.apple.quarantine /Applications/QLMarkdown.app
-# # more previews - TODO: alternative - deprecated
-# brew install --cask qlcolorcode
-
-brew install imagemagick
 ```
 
----
+## Global git ignore
 
-**Global git ignore**:
 ```sh
-# can use ~/.config/git/ignore, but same.
 global_ignore_path="$HOME/.gitignore-global"
 
 cat << EOF > "$global_ignore_path"
 # Global git ignore
-
 **/__pycache__
 **/node_modules
 **/.cache
 **/dist
-
 .DS_Store
 .env
 EOF
@@ -48,43 +42,31 @@ EOF
 git config --global core.excludesfile "$global_ignore_path"
 ```
 
+## macOS defaults
 
-**Customize behavior:**
 ```sh
-# show hidden files in finder by default
+# Show hidden files in Finder
 defaults write com.apple.finder AppleShowAllFiles true
 
-# disable emojis
-# Go to `System Settings - Keyboard - Press "globe" key to - DO NOTHING`
-sudo defaults write /Library/Preferences/FeatureFlags/Domain/UIKit.plist emoji_enhancements -dict-add Enabled -bool NO
-
-# disable 2 finger swipe goes back in browsing history
+# Disable two-finger swipe navigation in Chrome
 defaults write com.google.Chrome AppleEnableSwipeNavigateWithScrolls -bool FALSE
 
-# disable spotlight indexing - use Raycast
+# Disable Spotlight indexing (use Raycast instead)
 sudo mdutil -a -i off
 ```
 
-## Keepers
+## Useful snippets
+
 ```sh
-# can help with flickering vscode on external monitor (not persistent, wip)
+# Fix VSCode flickering on external monitor
 code --disable-gpu
 
-# Restart audio core
+# Restart Core Audio
 sudo launchctl kickstart -kp system/com.apple.audio.coreaudiod
 
-#:~:text= for chrome
-
-cp  ~/Library/Application\ Support/Code/User/settings.json  ~/Documents/GitHub/cli-utils/saved-configs/settings.json
-
-
-#  Thunderbird + Ollama
+# Allow Ollama requests from Thunderbird extension
 launchctl setenv OLLAMA_ORIGINS "moz-extension://*"
 
-
-# TODO, does not work. 
-# Disable itunes launcher (pressing f8) - 
-# launchctl unload -w /System/Library/LaunchAgents/com.apple.rcd.plist
+# Backup VSCode settings
+cp ~/Library/Application\ Support/Code/User/settings.json ~/Documents/GitHub/cli-utils/saved-configs/settings.json
 ```
-
-
