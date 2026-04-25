@@ -12,7 +12,7 @@ security add-generic-password -a "$USER" -s npm_token -w xxx
 
 """
 
-wtoken() {
+:wtoken() {
   local input="$1"
   shift
 

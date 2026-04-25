@@ -1,4 +1,4 @@
-upgrade-package() {
+:upgrade-pkgjson() {
     CURRENT=$(node -p "require('./package.json').version")
     MAJOR=$(echo "$CURRENT" | cut -d. -f1)
     MINOR=$(echo "$CURRENT" | cut -d. -f2)

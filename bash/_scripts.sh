@@ -40,3 +40,20 @@ cli_pth_vendors="$PATH_CLI_UTILS/vendor"
 :grep-component() {
     python3 "$cli_pth_scripts/fn-grep-react-component.py" "$@"
 }
+
+
+:download-archive() {
+    python3 "$cli_pth_scripts/unarchive-web.py" "$@"
+}
+
+
+### Wrapper for all download functions
+# :dl() {
+#         case "$1" in
+#             yt|youtube) 
+#                 :download-yt  "$@";
+#             sp|spotify) 
+#                 :download-yt  "$@";
+#         *)
+#             echo "Elaba!;;
+# }
