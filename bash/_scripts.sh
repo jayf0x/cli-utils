@@ -46,6 +46,10 @@ cli_pth_vendors="$PATH_CLI_UTILS/vendor"
     python3 "$cli_pth_scripts/unarchive-web.py" "$@"
 }
 
+:git-folder() {
+    python3 "$cli_pth_scripts/git-folder-download.py" "$@"
+}
+
 
 ### Wrapper for all download functions
 # :dl() {
