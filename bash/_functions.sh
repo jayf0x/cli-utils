@@ -182,8 +182,21 @@
 }
 
 
-
-
 :urlencode() {
     echo "$1" | jq -sRr @uri
+}
+
+
+:cd() {
+    local base="$HOME/Documents/Github"
+
+    # if ! "$1"; then
+    #     ls -1 $base
+    #     return
+    # fi
+
+    cd "$base/$(
+        find . -mindepth 1 -maxdepth 1 -type d -printf '%f\n' |
+        fzf --query="$1"
+    )"
 }
