@@ -1,0 +1,1 @@
+- path replacement: `(\.\./)+config` + `@/config`
