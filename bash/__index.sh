@@ -16,3 +16,4 @@ for f in $PATH_CLI_UTILS/packages/*.sh; do source $f; done
 #### global var overwrites ####
 
 export HOMEBREW_INSTALL_BADGE="☕️"
+export PATH="/usr/local/bin:$PATH"

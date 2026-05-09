@@ -1,10 +1,4 @@
 ## Overwrites of existing function ##
-
-code() { 
-	local target="${1:-$HOME/Library/Application Support/Code/User/settings.json}"
-    open -a "Visual Studio Code" "$target"
-}
-
 cd () {
     if [ $# -eq 0 ]; then
         echo "Give me smth to argue with.."
