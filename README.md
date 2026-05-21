@@ -51,7 +51,16 @@ defaults write com.apple.finder AppleShowAllFiles true
 # Disable two-finger swipe navigation in Chrome
 defaults write com.google.Chrome AppleEnableSwipeNavigateWithScrolls -bool FALSE
 
-# Disable Spotlight indexing (use Raycast instead)
+# disable emoji popup
+sudo defaults write /Library/Preferences/FeatureFlags/Domain/UIKit.plist emoji_enhancements -dict-add Enabled -bool NO   
+
+# no hot corners
+defaults write com.apple.dock wvous-tl-corner -int 0
+
+# no dictionary long press
+defaults write -g ApplePressAndHoldEnabled -bool false
+
+# Disable Spotlight indexing (use Raycast instead!)
 sudo mdutil -a -i off
 ```
 
