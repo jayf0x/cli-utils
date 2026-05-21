@@ -56,6 +56,9 @@ sudo defaults write /Library/Preferences/FeatureFlags/Domain/UIKit.plist emoji_e
 
 # no hot corners
 defaults write com.apple.dock wvous-tl-corner -int 0
+defaults write com.apple.dock wvous-tr-corner -int 0
+defaults write com.apple.dock wvous-bl-corner -int 0
+defaults write com.apple.dock wvous-br-corner -int 0
 
 # no dictionary long press
 defaults write -g ApplePressAndHoldEnabled -bool false
