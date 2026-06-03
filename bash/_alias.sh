@@ -19,6 +19,8 @@ alias t2m='tree --du -h -L 2 | grep M]'
 #alias tsg='tree --du -h | grep G]'
 # alias psg="ps aux | grep -v grep | grep -i -e VSZ -e"
 
+alias his="history -L 3"
+
 alias python="python3"
 alias pip="pip3"
 alias py="python3"
