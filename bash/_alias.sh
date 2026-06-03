@@ -11,11 +11,11 @@ alias lsl="ls -lhFA | less"
 
 alias c='clear'
 
-alias t1='tree -L 1'
-alias t2='tree -L 2'
-alias t3='tree -L 3'
+alias t1='tree -I "node_modules|dist|__pycache__" -L 1'
+alias t2='tree -I "node_modules|dist|__pycache__" -L 2'
+alias t3='tree -I "node_modules|dist|__pycache__" -L 3'
 # usage of file size (only 2levels as it might do insane search otherwise)
-alias t2m='tree --du -h -L 2 | grep M]'
+alias t2m='tree -I "node_modules|dist|__pycache__" --du -h -L 2 | grep M]'
 #alias tsg='tree --du -h | grep G]'
 # alias psg="ps aux | grep -v grep | grep -i -e VSZ -e"
 
