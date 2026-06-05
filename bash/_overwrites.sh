@@ -35,7 +35,35 @@ cd () {
     builtin cd -- "$target" || return
 }
 
+# too much?
+command_not_found_handler() {
+    local faces=(
+        "pancakeface"              "chimpface"
+        "zwahililiandonkeyface"    "moldytoastface"
+        "soggycrumpetface"         "flemishdonkeyface"
+        "transylvanianratface"     "belarusianpigeonface"
+        "kazakhstanihamsterface"   "bolivianmarmotface"
+        "patagonianyakface"        "cabbageface"
+        "estoniangoblinface"       "fjordface"
+        "warthogface"              "haggisface"
+        "swampface"                "appendixface"
+        "crustybagelface"          "pigeonface"
+        "mongoosface"              "blancmangeface"
+        "soggybargeface"           "peruvianllamamface"
+    )
 
+    local idx=$(( $(date +%s) % ${#faces[@]} + 1 ))
+    local face=${faces[$idx]}
+
+    local RESET='\033[0m'
+    local DIM='\033[38;5;242m'
+    local FACE='\033[38;5;173m'
+    local CMD='\033[38;5;255m'
+
+    printf "${DIM}not found, ${FACE}%s${DIM}: ${CMD}%s${RESET}\n" "$face" "$*"
+
+    return 127
+}
 
 
 WIP_mv() {
