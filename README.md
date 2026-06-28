@@ -63,6 +63,10 @@ defaults write com.apple.dock wvous-br-corner -int 0
 # no dictionary long press
 defaults write -g ApplePressAndHoldEnabled -bool false
 
+# disable dictation model poping up
+defaults write com.apple.HIToolbox AppleDictationAutoEnable -int 0
+
+
 # Disable Spotlight indexing (use Raycast instead!)
 sudo mdutil -a -i off
 ```
