@@ -2,7 +2,7 @@
 # Please import me :)
 
 # path to this repo
-export PATH_CLI_UTILS="$HOME/Documents/GitHub/cli-utils/bash"
+export PATH_CLI_UTILS="$HOME/code/cli-utils/bash"
 
 source "$PATH_CLI_UTILS/_alias.sh"
 source "$PATH_CLI_UTILS/_scripts.sh"
@@ -11,6 +11,9 @@ source "$PATH_CLI_UTILS/_overwrites.sh"
 
 # import custom bash files
 for f in $PATH_CLI_UTILS/packages/*.sh; do source $f; done
+
+# linux-only standalone executables (e.g. add-app)
+export PATH="$PATH_CLI_UTILS/linux:$PATH"
 
 
 #### global var overwrites ####

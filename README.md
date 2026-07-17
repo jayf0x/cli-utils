@@ -7,10 +7,17 @@ Personal CLI tooling and background apps for macOS.
 
 ## Setup on a new machine
 
+Make sure to edit this var to where you installed this repo:
+```sh
+# see ./bash/__index.sh
+export PATH_CLI_UTILS="$HOME/Documents/GitHub/cli-utils/bash"
+```
+
+
 Source the index file:
 
 ```sh
-echo "\nsource '$HOME/Documents/GitHub/cli-utils/bash/__index.sh'" >> ~/.zshrc
+echo "\nsource '$HOME/Documents/GitHub/cli-utils/bash/__index.sh'" >> ~/.bashrc
 ```
 
 Install dependencies:
