@@ -1,0 +1,122 @@
+#!/usr/bin/env python3
+"""
+:sync-shortcut — create/refresh a desktop + dock shortcut for an app that
+lives in its own folder and must run with that folder as its working
+directory (typical of Linux game installs, where a symlinked launcher fails
+to find its own assets).
+
+This script NEVER touches anything inside the target folder — read-only,
+aside from copying (not moving) an icon out of it. It only creates/updates
+files under ~/.local/share/applications and ~/.local/share/icons.
+
+Because the .desktop file's Exec/Path/Icon are absolute paths baked in at
+sync time, if you move the folder later just re-run this command pointing
+at the new location — nothing needs to be reinstalled, and the app itself
+is never modified.
+
+  :sync-shortcut /path/to/GameFolder \\
+      [--exec launcher] [--icon launcher.ico] [--name "War Thunder"] \\
+      [--categories "Game;"] [--no-pin]
+
+To remove a shortcut created by this script (safe — it will not touch the
+game folder since the Exec path lives outside ~/Applications):
+  :add-app --uninstall "<name>"
+"""
+
+import argparse
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent / "lib"))
+import app_shortcuts as core
+
+PROG = ":sync-shortcut"
+
+EXEC_CANDIDATES = ["launcher", "start.sh", "run.sh", "play.sh", "start"]
+SKIP_EXEC_HINTS = ("updater", "report")
+
+
+def find_exec(folder: Path) -> Path | None:
+    candidates = EXEC_CANDIDATES + [folder.name.lower()]
+    for c in candidates:
+        p = folder / c
+        if p.is_file() and (p.stat().st_mode & 0o111):
+            return p
+
+    for p in sorted(folder.iterdir()):
+        if not p.is_file() or not (p.stat().st_mode & 0o111):
+            continue
+        low = p.name.lower()
+        if low.endswith(".so") or any(hint in low for hint in SKIP_EXEC_HINTS):
+            continue
+        return p
+
+    return None
+
+
+def find_icon(folder: Path) -> Path | None:
+    candidates = sorted(
+        p for p in folder.iterdir()
+        if p.is_file() and p.suffix.lower() in (".ico", ".png", ".svg")
+    )
+    return candidates[0] if candidates else None
+
+
+def main():
+    parser = argparse.ArgumentParser(prog=PROG, description=__doc__,
+                                      formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument("folder")
+    parser.add_argument("--exec", dest="exec_name", help="filename (relative to folder) of the launcher")
+    parser.add_argument("--icon", help="filename or path of the icon to use")
+    parser.add_argument("--name", help="display name (defaults to the folder's basename)")
+    parser.add_argument("--categories", default="Game;")
+    parser.add_argument("--no-pin", action="store_true")
+    args = parser.parse_args()
+
+    folder = Path(args.folder).resolve()
+    if not folder.is_dir():
+        print(f"{PROG}: not a directory: {folder}", file=sys.stderr)
+        sys.exit(1)
+
+    if args.exec_name:
+        exec_path = folder / args.exec_name
+    else:
+        exec_path = find_exec(folder)
+
+    if not exec_path or not exec_path.is_file() or not (exec_path.stat().st_mode & 0o111):
+        print(f"{PROG}: couldn't auto-detect a launcher executable in {folder}", file=sys.stderr)
+        print(f"{PROG}: pass one explicitly with --exec <filename>", file=sys.stderr)
+        sys.exit(1)
+
+    if args.icon:
+        icon_src = Path(args.icon)
+        if not icon_src.is_absolute():
+            icon_src = folder / icon_src
+    else:
+        icon_src = find_icon(folder)
+
+    name = args.name or folder.name
+    app_id = core.slugify(name)
+
+    icon_field = core.install_icon_from_path(app_id, icon_src) or "application-x-executable"
+    if icon_src and icon_field == "application-x-executable":
+        print(f"{PROG}: couldn't convert {icon_src} — using generic icon", file=sys.stderr)
+
+    out_desktop = core.write_desktop_file(
+        app_id, name, str(exec_path), icon_field,
+        comment="Shortcut synced by sync-shortcut",
+        categories=args.categories,
+        path=folder,
+    )
+
+    core.update_caches()
+
+    print(f"{PROG}: '{name}' -> {exec_path} (cwd: {folder})")
+    print(f"{PROG}: launcher -> {out_desktop}")
+
+    if not args.no_pin:
+        core.pin_to_dock(f"{app_id}.desktop", prog=PROG)
+
+
+if __name__ == "__main__":
+    main()

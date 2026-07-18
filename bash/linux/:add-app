@@ -1,0 +1,252 @@
+#!/usr/bin/env python3
+"""
+:add-app — install or uninstall a .AppImage or .deb as a proper Linux app.
+
+  :add-app ./SomeApp.AppImage [--no-pin] [--name "Custom Name"]
+  :add-app ./some-package.deb [--no-pin]
+  :add-app --uninstall <name-or-desktop-id> [-y]
+
+For .AppImage: chmod +x, moves it into ~/Applications, extracts the bundled
+.desktop file + icon, installs the icon, writes a launcher to
+~/.local/share/applications, and pins it to the GNOME dock.
+
+For .deb: installs via apt (resolves dependencies), finds the .desktop file
+the package registered, and pins it to the dock.
+
+--uninstall matches by app name or .desktop filename (substring, case
+insensitive) across both ~/.local/share/applications and
+/usr/share/applications. Ambiguous matches are listed instead of guessed.
+AppImage installs are fully removed (launcher, icon, executable); .deb
+installs are removed via apt.
+
+If an AppImage doesn't bundle a usable .desktop/icon and `claude` is on
+PATH, falls back to asking Claude Code to generate a .desktop entry from
+the extracted file listing.
+"""
+
+import argparse
+import subprocess
+import sys
+import tempfile
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent / "lib"))
+import app_shortcuts as core
+
+PROG = ":add-app"
+
+
+def find_desktop_in_squashfs(root: Path):
+    matches = sorted(root.glob("*.desktop")) + sorted(root.glob("*/*.desktop"))
+    return matches[0] if matches else None
+
+
+def find_icon_by_name(root: Path, icon_name: str):
+    icon_name_lower = icon_name.lower()
+    for ext in ("png", "svg"):
+        for f in root.rglob(f"*.{ext}"):
+            if f.stem.lower() == icon_name_lower:
+                return f
+    return None
+
+
+def find_icon_toplevel(root: Path):
+    candidates = sorted(list(root.glob("*.png")) + list(root.glob("*.svg")))
+    return candidates[0] if candidates else None
+
+
+def install_appimage(path: str, custom_name: str, no_pin: bool):
+    abs_path = Path(path).resolve()
+    abs_path.chmod(abs_path.stat().st_mode | 0o111)
+
+    core.APPS_DIR.mkdir(parents=True, exist_ok=True)
+    dest = core.APPS_DIR / abs_path.name
+    if abs_path != dest:
+        abs_path.rename(dest)
+
+    with tempfile.TemporaryDirectory() as tmp:
+        tmp_path = Path(tmp)
+        subprocess.run([str(dest), "--appimage-extract"], cwd=tmp_path,
+                        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        squashfs = tmp_path / "squashfs-root"
+
+        if not squashfs.is_dir():
+            print(f"{PROG}: failed to extract AppImage (does it support --appimage-extract?)", file=sys.stderr)
+            sys.exit(1)
+
+        desktop_src = find_desktop_in_squashfs(squashfs)
+        kv = core.parse_desktop_kv(desktop_src) if desktop_src else {}
+
+        name = custom_name or kv.get("Name") or dest.stem
+        comment = kv.get("Comment", "Installed via add-app")
+        categories = kv.get("Categories", "Utility;")
+        icon_name = kv.get("Icon", "")
+
+        app_id = core.slugify(name)
+
+        icon_src = find_icon_by_name(squashfs, icon_name) if icon_name else None
+        icon_src = icon_src or find_icon_toplevel(squashfs)
+        if not icon_src and (squashfs / ".DirIcon").exists():
+            icon_src = squashfs / ".DirIcon"
+
+        icon_field = core.install_icon_from_path(app_id, icon_src) or "application-x-executable"
+
+        text = None
+        if not desktop_src:
+            text = core.ask_claude(
+                "An AppImage was extracted to a squashfs-root directory. Here is the file "
+                f"listing (truncated to depth 3):\n\n{_listing(squashfs)}\n\n"
+                f"Write a valid freedesktop .desktop file for this app. Use Exec={dest} "
+                "(do not change this path), pick a sensible Name/Comment/Categories from the "
+                "file listing, set Terminal=false and Type=Application. On the Icon= line put "
+                "just an icon name (no path).\n\nOutput ONLY the raw .desktop file contents, nothing else."
+            )
+
+        if not text:
+            text = "\n".join([
+                "[Desktop Entry]",
+                f"Name={name}",
+                f"Comment={comment}",
+                f"Exec={dest}",
+                f"Icon={icon_field}",
+                f"Categories={categories}",
+                "Terminal=false",
+                "Type=Application",
+            ]) + "\n"
+
+        text = core.enforce_desktop_fields(text, {"Exec": str(dest), "Icon": icon_field})
+
+        core.DESKTOP_DIR.mkdir(parents=True, exist_ok=True)
+        out_desktop = core.DESKTOP_DIR / f"{app_id}.desktop"
+        out_desktop.write_text(text)
+        out_desktop.chmod(out_desktop.stat().st_mode | 0o111)
+
+    core.update_caches()
+
+    print(f"{PROG}: installed '{name}' -> {dest}")
+    print(f"{PROG}: launcher -> {out_desktop}")
+
+    if not no_pin:
+        core.pin_to_dock(f"{app_id}.desktop", prog=PROG)
+
+
+def _listing(root: Path, max_depth: int = 3) -> str:
+    lines = []
+    base_parts = len(root.parts)
+    for p in sorted(root.rglob("*")):
+        if len(p.parts) - base_parts <= max_depth:
+            lines.append(str(p))
+    return "\n".join(lines)
+
+
+def install_deb(path: str, no_pin: bool):
+    pkg_name = subprocess.run(["dpkg-deb", "-f", path, "Package"],
+                               capture_output=True, text=True).stdout.strip()
+    if not pkg_name:
+        print(f"{PROG}: could not read package name from {path}", file=sys.stderr)
+        sys.exit(1)
+
+    print(f"{PROG}: installing {pkg_name} via apt (may prompt for sudo password)...")
+    subprocess.run(["sudo", "apt", "install", "-y", str(Path(path).resolve())], check=True)
+
+    listing = subprocess.run(["dpkg", "-L", pkg_name], capture_output=True, text=True).stdout.splitlines()
+    desktop_path = next((l for l in listing if l.endswith(".desktop")), None)
+
+    if not desktop_path:
+        print(f"{PROG}: installed, but couldn't find a .desktop file for '{pkg_name}' — pin it manually.")
+        return
+
+    print(f"{PROG}: installed '{pkg_name}', launcher -> {desktop_path}")
+
+    if not no_pin:
+        core.pin_to_dock(Path(desktop_path).name, prog=PROG)
+
+
+def uninstall_app(query: str, assume_yes: bool):
+    candidates = core.find_desktop_candidates(query)
+
+    if not candidates:
+        print(f"{PROG}: no installed app matching '{query}'", file=sys.stderr)
+        sys.exit(1)
+
+    if len(candidates) > 1:
+        print(f"{PROG}: multiple matches for '{query}', be more specific:", file=sys.stderr)
+        for c in candidates:
+            print(f"  {c.stem}  ({c})", file=sys.stderr)
+        sys.exit(1)
+
+    desktop_path = candidates[0]
+    desktop_id = desktop_path.name
+    kv = core.parse_desktop_kv(desktop_path)
+    name = kv.get("Name", desktop_id)
+
+    if not assume_yes:
+        confirm = input(f"{PROG}: remove '{name}' ({desktop_path})? [y/N]: ")
+        if not confirm.lower().startswith("y"):
+            print(f"{PROG}: aborted")
+            return
+
+    core.unpin_from_dock(desktop_id)
+
+    if desktop_path.parent == core.DESKTOP_DIR:
+        exec_line = kv.get("Exec", "")
+        exec_path = Path(exec_line.split()[0].strip('"')) if exec_line else None
+        icon_name = kv.get("Icon", "")
+
+        desktop_path.unlink(missing_ok=True)
+        if icon_name:
+            (core.ICON_DIR / f"{icon_name}.png").unlink(missing_ok=True)
+            (core.ICON_DIR_SVG / f"{icon_name}.svg").unlink(missing_ok=True)
+
+        if exec_path and core.APPS_DIR in exec_path.parents and exec_path.exists():
+            exec_path.unlink()
+            print(f"{PROG}: removed '{name}', launcher, icon, and {exec_path}")
+        else:
+            print(f"{PROG}: removed '{name}' launcher and icon (executable at '{exec_path}' left in place)")
+    else:
+        result = subprocess.run(["dpkg", "-S", str(desktop_path)], capture_output=True, text=True)
+        pkg = result.stdout.split(":")[0].strip() if result.returncode == 0 else None
+
+        if pkg:
+            print(f"{PROG}: removing package '{pkg}' via apt (may prompt for sudo password)...")
+            subprocess.run(["sudo", "apt", "remove", "-y", pkg])
+        else:
+            print(f"{PROG}: '{desktop_path}' isn't owned by an apt package — remove it manually if desired.")
+
+    core.update_caches()
+
+
+def main():
+    parser = argparse.ArgumentParser(prog=PROG, description=__doc__,
+                                      formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument("file", nargs="?", help=".AppImage or .deb to install")
+    parser.add_argument("--uninstall", "-u", metavar="QUERY", help="uninstall by app name or desktop id")
+    parser.add_argument("--no-pin", action="store_true", help="don't pin to the GNOME dock")
+    parser.add_argument("--name", help="override the detected app name")
+    parser.add_argument("-y", "--yes", action="store_true", help="skip uninstall confirmation")
+    args = parser.parse_args()
+
+    if args.uninstall:
+        uninstall_app(args.uninstall, args.yes)
+        return
+
+    if not args.file:
+        parser.print_help()
+        sys.exit(1)
+
+    if not Path(args.file).is_file():
+        print(f"{PROG}: no such file: {args.file}", file=sys.stderr)
+        sys.exit(1)
+
+    ext = Path(args.file).suffix.lower()
+    if ext == ".appimage":
+        install_appimage(args.file, args.name, args.no_pin)
+    elif ext == ".deb":
+        install_deb(args.file, args.no_pin)
+    else:
+        print(f"{PROG}: unsupported file type: {args.file} (expected .AppImage or .deb)", file=sys.stderr)
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()
