@@ -28,6 +28,41 @@
     echo "Gone."
 }
 
+:copy-branch() {
+    local src="$1"
+    local dst="${2:-"$src backup"}"
+
+    if [ -z "$src" ]; then
+        echo "Usage: copy-branch <source-branch> [new-branch]"
+        return 1
+    fi
+
+    local current
+    current=$(git branch --show-current)
+
+    # Verify source branch exists
+    git show-ref --verify --quiet "refs/heads/$src" || {
+        echo "Branch '$src' does not exist."
+        return 1
+    }
+
+    # Create the new branch
+    git branch "$dst" "$src" || return 1
+
+    # If we're on the source branch and have local changes,
+    # copy them onto the new branch as well.
+    if [ "$current" = "$src" ] && ! git diff --quiet || ! git diff --cached --quiet; then
+        git stash push -u -m "copy-branch temp" >/dev/null || return 1
+        git switch "$dst" || return 1
+        git stash apply >/dev/null || return 1
+        git switch "$src" || return 1
+        git stash apply >/dev/null || return 1
+        git stash drop >/dev/null
+    fi
+
+    echo "Created '$dst'."
+}
+
 
 :llm() {
 	if [[ "$1" = 's' ]]; then

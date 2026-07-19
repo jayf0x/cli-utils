@@ -1,8 +1,7 @@
 #!/bin/bash
-# Please import me :)
 
 # path to this repo
-export PATH_CLI_UTILS="$HOME/code/cli-utils/bash"
+export PATH_CLI_UTILS="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd -P)"
 
 source "$PATH_CLI_UTILS/_alias.sh"
 source "$PATH_CLI_UTILS/_scripts.sh"
