@@ -30,7 +30,7 @@
 
 :copy-branch() {
     local src="$1"
-    local dst="${2:-"$src backup"}"
+    local dst="${2:-"$src-backup"}"
 
     if [ -z "$src" ]; then
         echo "Usage: copy-branch <source-branch> [new-branch]"
